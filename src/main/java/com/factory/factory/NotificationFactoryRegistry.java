@@ -22,7 +22,7 @@ public class NotificationFactoryRegistry {
     );
 
     public NotificationFactory getFactory(String type) {
-        NotificationFactory factory = registry.get(type == null ? null : type.toUpperCase(java.util.Locale.ROOT));
+        NotificationFactory factory = type == null ? null : registry.get(type.toUpperCase(java.util.Locale.ROOT));
         if (factory == null) {
             throw new IllegalArgumentException(
                 "Unknown notification type: '" + type + "'. Valid types: EMAIL, SMS, PUSH"

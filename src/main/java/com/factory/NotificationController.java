@@ -34,7 +34,7 @@ public class NotificationController {
         String recipient = request.getOrDefault("recipient", "");
         String message   = request.getOrDefault("message", "");
 
-        if (type.isBlank() || recipient.isBlank() || message.isBlank()) {
+        if (type == null || type.isBlank() || recipient == null || recipient.isBlank() || message == null || message.isBlank()) {
             return ResponseEntity.badRequest().body(Map.of(
                 "error", "Fields 'type', 'recipient', and 'message' are required."
             ));
@@ -48,7 +48,8 @@ public class NotificationController {
             Notification notification = factory.createNotification();
 
             // 3. Use the factory's template method
-            String result = String.format("%s %s | Status: SIMULATED",\n                notification.getIcon(), notification.send(recipient, message));
+            String result = String.format("%s %s | Status: SIMULATED",
+                notification.getIcon(), notification.send(recipient, message));
 
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("status", "simulated");
