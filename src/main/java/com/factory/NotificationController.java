@@ -40,6 +40,10 @@ public class NotificationController {
             ));
         }
 
+        type = type.trim();
+        recipient = recipient.trim();
+        message = message.trim();
+
         try {
             // 1. Get the right factory (still abstracted — no `new` here)
             NotificationFactory factory = registry.getFactory(type);

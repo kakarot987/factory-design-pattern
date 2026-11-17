@@ -20,12 +20,25 @@ class NotificationFactoryTest {
         assertEquals("SMS", registry.getFactory("sms").createNotification().getType());
         assertEquals("PUSH", registry.getFactory("push").createNotification().getType());
         assertEquals(3, registry.getSupportedTypes().size());
+        assertEquals("EMAIL", registry.getFactory(" email ").createNotification().getType());
     }
 
     @Test
     void rejectsUnsupportedTypes() {
         assertThrows(IllegalArgumentException.class, () -> registry.getFactory("FAX"));
         assertThrows(IllegalArgumentException.class, () -> registry.getFactory(null));
+    }
+
+    @Test
+    void rejectsBlankOrMissingNotificationFields() {
+        NotificationController controller = new NotificationController(registry);
+        for (Map<String, String> payload : java.util.List.of(
+                Map.of("type", "SMS", "recipient", "  ", "message", "hello"),
+                Map.of("type", "SMS", "recipient", "bob", "message", "  "),
+                Map.of("type", "PUSH", "recipient", "bob")
+        )) {
+            assertEquals(400, controller.sendNotification(payload).getStatusCode().value());
+        }
     }
 
     @Test
