@@ -33,7 +33,7 @@ public abstract class NotificationFactory {
 
         String result = notification.send(recipient, message);
 
-        return String.format("%s %s | Status: SENT ✓", notification.getIcon(), result);
+        return String.format("%s %s | Status: SIMULATED", notification.getIcon(), result);
     }
 
     public String getFactoryName() {

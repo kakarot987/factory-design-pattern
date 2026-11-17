@@ -34,7 +34,7 @@ public class NotificationController {
         String recipient = request.getOrDefault("recipient", "");
         String message   = request.getOrDefault("message", "");
 
-        if (type.isBlank() || recipient.isBlank() || message.isBlank()) {
+        if (type == null || type.isBlank() || recipient == null || recipient.isBlank() || message == null || message.isBlank()) {
             return ResponseEntity.badRequest().body(Map.of(
                 "error", "Fields 'type', 'recipient', and 'message' are required."
             ));
@@ -48,16 +48,17 @@ public class NotificationController {
             Notification notification = factory.createNotification();
 
             // 3. Use the factory's template method
-            String result = factory.notify(recipient, message);
+            String result = String.format("%s %s | Status: SIMULATED",
+                notification.getIcon(), notification.send(recipient, message));
 
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("status", "success");
+            response.put("status", "simulated");
             response.put("notificationType", notification.getType());
             response.put("icon", notification.getIcon());
             response.put("factoryUsed", factory.getFactoryName());
             response.put("result", result);
             response.put("patternNote",
-                "The controller only called factory.notify(). " +
+                "The controller created one product using the factory method. " +
                 "It never instantiated " + notification.getClass().getSimpleName() + " directly."
             );
 
