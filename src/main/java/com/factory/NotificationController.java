@@ -48,16 +48,16 @@ public class NotificationController {
             Notification notification = factory.createNotification();
 
             // 3. Use the factory's template method
-            String result = factory.notify(recipient, message);
+            String result = String.format("%s %s | Status: SIMULATED",\n                notification.getIcon(), notification.send(recipient, message));
 
             Map<String, Object> response = new LinkedHashMap<>();
-            response.put("status", "success");
+            response.put("status", "simulated");
             response.put("notificationType", notification.getType());
             response.put("icon", notification.getIcon());
             response.put("factoryUsed", factory.getFactoryName());
             response.put("result", result);
             response.put("patternNote",
-                "The controller only called factory.notify(). " +
+                "The controller created one product using the factory method. " +
                 "It never instantiated " + notification.getClass().getSimpleName() + " directly."
             );
 
